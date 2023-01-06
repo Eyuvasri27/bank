@@ -10,3 +10,13 @@ type Bank struct {
 type Banker struct {
 	Bankdetails []Bank `json:"bankdetails"`
 }
+type BankUserDetails struct {
+	Id            int    `json:"id"`
+	Username      string `json:"username"`
+	Password      string `json:"password"`
+	AccountNumber string `json:"accountnumber"`
+}
+type LoginVerification struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

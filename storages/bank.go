@@ -5,6 +5,28 @@ import (
 	"fmt"
 )
 
+func (c *cursor) AccountDetails(bank *models.BankUserDetails) error {
+	sqlstatement := "INSERT INTO bankuserdetails(id,username,password,accountnumber)values($1,$2,$3,$4)"
+	_, err := c.Db.Query(sqlstatement, bank.Id, bank.Username, bank.Password, bank.AccountNumber)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	return nil
+
+}
+
+func (c *cursor) Verification(username, password string) (*models.BankUserDetails, error) {
+	sqlstatement := "SELECT * FROM bankuserdetails where username = $1 and password = $2"
+	var v models.BankUserDetails
+	res := c.Db.QueryRow(sqlstatement, username, password)
+	err := res.Scan(&v.Id, &v.Username, &v.Password, &v.AccountNumber)
+	if err != nil {
+		return nil, err
+	}
+	return &v, nil
+}
+
 func (c *cursor) Createbank(b *models.Bank) error {
 	sqlstatement := "INSERT INTO bank(name,acntnum,acnttype,acntbal)VALUES($1,$2,$3,$4)"
 	_, err := c.Db.Query(sqlstatement, b.Name, b.Acntnum, b.Acnttype, b.Acntbal)
